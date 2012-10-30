@@ -12,8 +12,8 @@ before(function() {
       return this.get('prop');
     },
 
-    setTest: function() {
-      this.set('prop', 'yagxen');
+    setTest: function(v) {
+      this.set('prop', v || 'yagxen');
     }
   });
 
@@ -32,6 +32,17 @@ describe('plugin', function() {
   describe('#set', function() {
     it('should set a property', function() {
       app.plugins.setTest(),
+      expect(app.plugins.getTest()).to.be('yagxen');
+    });
+  });
+
+  describe('Instance', function() {
+    it('should leave the source plugin untouched', function() {
+      var instance = app.Instance();
+
+      instance.setTest('test');
+
+      expect(instance.getTest()).to.be('test');
       expect(app.plugins.getTest()).to.be('yagxen');
     });
   });
