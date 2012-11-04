@@ -14,6 +14,10 @@ before(function() {
 
     setTest: function(v) {
       this.set('prop', v || 'yagxen');
+    },
+
+    asyncTest: function(a, cbl) {
+      cbl(++a);
     }
   });
 
@@ -33,6 +37,15 @@ describe('plugin', function() {
     it('should set a property', function() {
       app.plugins.setTest(),
       expect(app.plugins.getTest()).to.be('yagxen');
+    });
+  });
+
+  describe('#async', function() {
+    it('should execute functions asynchronously', function(done) {
+      app.plugins.async.asyncTest(3, function(t) {
+        expect(t).to.be(4);
+        done();
+      });
     });
   });
 

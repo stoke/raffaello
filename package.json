@@ -12,7 +12,8 @@
   "dependencies": {
     "utile": "*",
     "eventemitter2": "*",
-    "optimal": "git://github.com/urlship/Optimal.git"
+    "optimal": "git://github.com/urlship/Optimal.git",
+    "async": "*"
   },
   "devDependencies": {
     "mocha": "*",
