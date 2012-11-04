@@ -1,6 +1,7 @@
 var expect = require('expect.js'),
     PluginFactory = require('../lib').PluginFactory,
     plugin = new PluginFactory(),
+    plugin1 = new PluginFactory(),
     Application = require('../lib').Application,
     app = new Application();
 
@@ -17,13 +18,21 @@ before(function() {
     },
 
     asyncTest: function(a, cbl) {
-      cbl(++a);
+      cbl(null, ++a);
     }
   });
 
+  plugin1.extend({
+    asyncTest: function(a, cbl) {
+      cbl(null, parseInt(a) + 2);
+    }
+  });
+  
   plugin.setName('test');
+  plugin1.setName('test1');
 
   app.use(plugin.plugin());
+  app.use(plugin1.plugin());
 });
 
 describe('plugin', function() {
@@ -42,8 +51,9 @@ describe('plugin', function() {
 
   describe('#async', function() {
     it('should execute functions asynchronously', function(done) {
-      app.plugins.async.asyncTest(3, function(t) {
-        expect(t).to.be(4);
+      app.plugins.async.asyncTest(3, function(e, t) {
+        expect(t.test).to.be(4);
+        expect(t.test1).to.be(5);
         done();
       });
     });
